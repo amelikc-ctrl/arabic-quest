@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Арабский">
 <meta name="theme-color" content="#04121a">
-<meta name="description" content="Арабский язык с полным ташкилем: 11 уровней, 328 слов, разбор хараката по буквам, цифры и счёт. Прогресс сохраняется.">
+<meta name="description" content="Арабский язык с полным ташкилем: 11 уровней, цифры 0-30, разбор хараката по буквам. Прогресс сохраняется.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Scheherazade+New:wght@400;700&family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -281,8 +281,9 @@ main{position:relative;z-index:10;
 .qprompt{font-size:clamp(28px,6vw,46px);font-weight:600;line-height:1.3;color:#fff6e6}
 .qsub{font-size:13.5px;color:var(--muted);margin-top:10px;line-height:1.7}
 .qsub .inline-ar{font-family:var(--arFont);font-size:27px;color:var(--gold);vertical-align:-4px;padding:0 3px}
-.qhint{margin-top:12px;font-size:14px;color:var(--gold);min-height:20px;letter-spacing:.03em;opacity:0;transition:opacity .3s}
+.qhint{margin-top:12px;font-size:15px;color:var(--gold);min-height:22px;letter-spacing:.03em;opacity:0;transition:opacity .3s;line-height:1.6}
 .qhint.show{opacity:1}
+.qhint .ar{font-size:24px;vertical-align:-4px}
 .audio-btn{width:104px;height:104px;border-radius:50%;cursor:pointer;margin:4px auto 6px;display:grid;place-items:center;font-size:38px;
   border:1px solid var(--line);color:var(--gold);
   background:radial-gradient(circle at 35% 30%,rgba(242,181,68,.3),rgba(18,165,148,.14) 60%,rgba(0,0,0,.2));transition:transform .18s,box-shadow .25s}
@@ -299,7 +300,7 @@ main{position:relative;z-index:10;
 .opt .kb{position:absolute;top:7px;left:9px;font-size:10px;color:var(--muted);border:1px solid var(--line2);border-radius:5px;padding:1px 5px}
 .opt .g{font-family:var(--arFont);font-size:34px;line-height:1.95;color:#fff5e4}
 .opt .g.mark{font-size:42px;color:var(--gold);line-height:1.7}
-.opt .g.dg{font-size:40px;color:var(--gold);line-height:1.6}
+.opt .g.dg{font-size:44px;color:var(--gold);line-height:1.6;text-shadow:0 0 18px rgba(242,181,68,.35)}
 .opt .sub{font-size:11.5px;color:var(--muted)}
 .opt:hover:not(:disabled){transform:translateY(-3px);border-color:var(--gold);background:linear-gradient(168deg,rgba(242,181,68,.17),rgba(242,181,68,.04));box-shadow:0 16px 32px -22px var(--gold)}
 .opt:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
@@ -483,9 +484,9 @@ main{position:relative;z-index:10;
       <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
       <div class="hero-grid">
         <div>
-          <div class="label" id="heroCounts">Одиннадцать уровней · 328 слов · полный ташкиль</div>
+          <div class="label" id="heroCounts">Одиннадцать уровней · полный ташкиль</div>
           <h1>Читай арабский так, как он звучит</h1>
-          <p>Каждое слово огласовано: <b>фатха</b>, <b>дамма</b>, <b>кясра</b>, <b>сукун</b>, <b>шадда</b> и <b>танвин</b> стоят на своих местах.
+          <p>Каждое слово огласовано: <b>фатха</b>, <b>дамма</b>, <b>кясра</b>, <b>сукун</b>, <b>شадда</b> и <b>танвин</b> стоят на своих местах.
              Разбирай слово по буквам, слушай, затем проходи проверку — уровень открывается только когда <b>все точки стали зелёными</b>. Выходи в любой момент — игра запомнит, на каком слове остановился.</p>
           <div class="stats">
             <div class="stat gold"><b id="stXp">0</b><i>опыт</i></div>
@@ -627,7 +628,7 @@ main{position:relative;z-index:10;
 
 <script>
 "use strict";
-/* ===================== ДАННЫЕ (уровень 02 — цифры) ===================== */
+/* ===================== ДАННЫЕ (уровень 02 — цифры 0..30) ===================== */
 const RAW=[
 {id:1,title:"Алфавит",ar:"الْحُرُوف",acc:"#f2b544",icon:"letters",kind:"letters",w:[
 ["ا","alif","алиф — долгое «а»","أَلِف"],["ب","bāʾ","ба — звук б","بَاء"],["ت","tāʾ","та — звук т","تَاء"],
@@ -640,7 +641,7 @@ const RAW=[
 ["ك","kāf","кяф — ك","كَاف"],["ل","lām","лям — ل","لَام"],["م","mīm","мим — م","مِيم"],
 ["ن","nūn","нун — ن","نُون"],["ه","hāʾ","ха — мягкий ه","هَاء"],["و","wāw","вав — в / долгое у","وَاو"],
 ["ي","yāʾ","йа — й / долгое и","يَاء"]]},
-{id:2,title:"Цифры и счёт",ar:"الْأَرْقَام",acc:"#e05c8a",icon:"digits",kind:"digits",w:[
+{id:2,title:"Цифры 0–30",ar:"الْأَرْقَام",acc:"#e05c8a",icon:"digits",kind:"digits",w:[
 ["صِفْر","ṣifr","ноль","٠"],["وَاحِد","wāḥid","один","١"],["اِثْنَان","ithnān","два","٢"],
 ["ثَلَاثَة","thalātha","три","٣"],["أَرْبَعَة","arbaʿa","четыре","٤"],["خَمْسَة","khamsa","пять","٥"],
 ["سِتَّة","sitta","шесть","٦"],["سَبْعَة","sabʿa","семь","٧"],["ثَمَانِيَة","thamāniya","восемь","٨"],
@@ -650,10 +651,16 @@ const RAW=[
 ["خَمْسَةَ عَشَرَ","khamsata ʿashar","пятнадцать","١٥"],["سِتَّةَ عَشَرَ","sittata ʿashar","шестнадцать","١٦"],
 ["سَبْعَةَ عَشَرَ","sabʿata ʿashar","семнадцать","١٧"],["ثَمَانِيَةَ عَشَرَ","thamāniyata ʿashar","восемнадцать","١٨"],
 ["تِسْعَةَ عَشَرَ","tisʿata ʿashar","девятнадцать","١٩"],["عِشْرُونَ","ʿishrūn","двадцать","٢٠"],
-["ثَلَاثُونَ","thalāthūn","тридцать","٣٠"],["أَرْبَعُونَ","arbāʿūn","сорок","٤٠"],
-["خَمْسُونَ","khamsūn","пятьдесят","٥٠"],["سِتُّونَ","sittūn","шестьдесят","٦٠"],
-["سَبْعُونَ","sabʿūn","семьдесят","٧٠"],["ثَمَانُونَ","thamānūn","восемьдесят","٨٠"],
-["تِسْعُونَ","tisʿūn","девяносто","٩٠"],["مِئَة","miʾa","сто","١٠٠"],["أَلْف","alf","тысяча","١٠٠٠"]]},
+["وَاحِد وَعِشْرُونَ","wāḥid wa-ʿishrūn","двадцать один","٢١"],
+["اِثْنَان وَعِشْرُونَ","ithnān wa-ʿishrūn","двадцать два","٢٢"],
+["ثَلَاثَة وَعِشْرُونَ","thalātha wa-ʿishrūn","двадцать три","٢٣"],
+["أَرْبَعَة وَعِشْرُونَ","arbaʿa wa-ʿishrūn","двадцать четыре","٢٤"],
+["خَمْسَة وَعِشْرُونَ","khamsa wa-ʿishrūn","двадцать пять","٢٥"],
+["سِتَّة وَعِشْرُونَ","sitta wa-ʿishrūn","двадцать шесть","٢٦"],
+["سَبْعَة وَعِشْرُونَ","sabʿa wa-ʿishrūn","двадцать семь","٢٧"],
+["ثَمَانِيَة وَعِشْرُونَ","thamāniya wa-ʿishrūn","двадцать восемь","٢٨"],
+["تِسْعَة وَعِشْرُونَ","tisʿa wa-ʿishrūn","двадцать девять","٢٩"],
+["ثَلَاثُونَ","thalāthūn","тридцать","٣٠"]]},
 {id:3,title:"Семья",ar:"الْعَائِلَة",acc:"#e2503f",icon:"family",w:[
 ["أَب","ab","отец"],["أُمّ","umm","мать"],["اِبْن","ibn","сын"],["بِنْت","bint","дочь"],
 ["أَخ","akh","брат"],["أُخْت","ukht","сестра"],["جَدّ","jadd","дедушка"],["جَدَّة","jadda","бабушка"],
@@ -686,7 +693,7 @@ const RAW=[
 {id:6,title:"Кухня",ar:"الْمَطْبَخ",acc:"#3b7fd4",icon:"pot",w:[
 ["مَطْبَخ","maṭbakh","кухня"],["مَوْقِد","mawqid","плита"],["ثَلَّاجَة","thallāja","холодильник"],
 ["طَاوِلَة","ṭāwila","стол"],["كُرْسِيّ","kursī","стул"],["طَبَق","ṭabaq","тарелка"],["فِنْجَان","finjān","чашка"],
-["كَأْس","kaʾs","стакан"],["مِلْعَقَة","milʿaqa","ложка"],["شَوْكَة","shawka","вилка"],["سِكِّين","sikkīn","нож"],
+["كَأْس","kaʾs","стакان"],["مِلْعَقَة","milʿaqa","ложка"],["شَوْكَة","shawka","вилка"],["سِكِّين","sikkīn","нож"],
 ["قِدْر","qidr","кастрюля"],["مِقْلَاة","miqlāh","сковорода"],["إِبْرِيق","ibrīq","чайник"],["خُبْز","khubz","хлеб"],
 ["أَرُزّ","aruzz","рис"],["لَحْم","laḥm","мясо"],["حَلِيب","ḥalīb","молоко"],["مَاء","māʾ","вода"],
 ["شَاي","shāy","чай"],["قَهْوَة","qahwa","кофе"],["سُكَّر","sukkar","сахар"],["مِلْح","milḥ","соль"],
@@ -772,7 +779,7 @@ const CIRCLE="\u25CC";
 const HARAKAT_RE=/[\u064B-\u065F\u0670\u06D6-\u06ED]/;
 const STRIP_RE=/[\u064B-\u065F\u0670\u06D6-\u06ED\u0640]/g;
 const strip=s=>s.replace(STRIP_RE,"");
-const BASE_RU={"ا":"","أ":"ъ","إ":"ъ","آ":"а","ء":"ъ","ؤ":"ъ","ئ":"ъ","ب":"б","ت":"т","ث":"س","ج":"дж","ح":"х","خ":"х","د":"д","ذ":"з","ر":"р","ز":"з","س":"с","ش":"ш","ص":"с","ض":"д","ط":"т","ظ":"з","ع":"ъ","غ":"г","ف":"ф","ق":"к","ك":"ك","ل":"л","م":"м","ن":"н","ه":"х","و":"в","ي":"й","ة":"т","ى":"а"};
+const BASE_RU={"ا":"","أ":"ъ","إ":"ъ","آ":"а","ء":"ъ","ؤ":"ъ","ئ":"ъ","ب":"б","ت":"т","ث":"س","ج":"дж","ح":"х","خ":"х","د":"д","ذ":"з","ر":"р","ز":"з","س":"с","ش":"ш","ص":"س","ض":"د","ط":"т","ظ":"з","ع":"ъ","غ":"г","ف":"ф","ق":"к","ك":"ك","ل":"л","م":"м","ن":"н","ه":"х","و":"в","ي":"й","ة":"т","ى":"а"};
 function clusters(str){const out=[];for(const ch of str){if(HARAKAT_RE.test(ch)){if(out.length)out[out.length-1].m+=ch;continue;}out.push({b:ch,m:""});}return out;}
 function plural(n){const m=n%100;if(m>=11&&m<=14)return"слов";const k=n%10;if(k===1)return"слово";if(k>=2&&k<=4)return"слова";return"слов";}
 
@@ -805,7 +812,6 @@ const arText=s=>S.harakat?s:strip(s);
 const reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const wordGlyph=w=>w.kind==="digits"?w.name:arText(w.ar);
 
-/* ---------- сохранение позиции выхода ---------- */
 function progGet(lid){return S.progress[lid]||null;}
 function progSave(lid,data){S.progress[lid]=data;save();}
 function progClear(lid){delete S.progress[lid];save();}
@@ -985,10 +991,9 @@ function askResume(L){
    <button class="bigbtn solid" id="rsCont"><span class="g">▶</span><span>Продолжить</span></button>
   </div>`;
  $("modal").classList.add("on");
- $("rsFresh").onclick=()=>{Snd.click();closeModal();progClear(L.id);enterLearn(L,0);};
- $("rsCont").onclick=()=>{Snd.click();closeModal();enterLearn(L,pg.idx);};
+ $("rsFresh").onclick=()=>{Snd.click();closeModal();progClear(L.id);openLevel(L.id,0);};
+ $("rsCont").onclick=()=>{Snd.click();closeModal();openLevel(L.id,pg.idx);};
 }
-function enterLearn(L,idx){openLevel(L.id,idx);}
 function buildRail(){const r=$("rail");r.innerHTML="";
  G.lvl.words.forEach((w,i)=>{const b=el("button","rail-item");
   b.innerHTML=`<span class="g">${wordGlyph(w)}</span><span class="r">${w.ru}</span>`;
@@ -1066,10 +1071,8 @@ function pickType(w){
  if(w.kind==="letters"){if(G.mode==="marks")return "syll";return Math.random()<.34?"syll":(Math.random()<.5?"ar2ru":"ru2ar");}
  if(w.kind==="digits"){
   if(G.mode==="marks")return markTargets(w).length?"mark":"sym2ru";
-  const bag=["sym2ru","sym2ru","ar2ru","ru2ar"];
-  if(Speech.ok&&Speech.voice)bag.push("audio");
-  if(S.harakat&&markTargets(w).length)bag.push("mark");
-  return bag[rnd(bag.length)];}
+  return ["word2sym","sym2ru","ru2sym"][rnd(3)];
+ }
  if(G.mode==="marks"){return markTargets(w).length?"mark":"ar2ru";}
  const bag=["ar2ru","ar2ru","ru2ar"];
  if(Speech.ok&&Speech.voice)bag.push("audio");
@@ -1089,7 +1092,22 @@ function renderQuestion(q,keep){const w=q.w,type=q.type,cfg=diffCfg();
  if(!keep){hint.classList.remove("show");hint.textContent="";}
  typeEl.className="qtype";wrap.innerHTML="";sub.innerHTML="";
  let opts=[],correct=0;
- if(type==="sym2ru"){
+ if(type==="word2sym"){
+  typeEl.textContent="Выбери цифру";typeEl.classList.add("dg");
+  const d=el("div","word-ar ar"+(S.glow&&S.harakat?" marks-on":""));d.textContent=arText(w.ar);
+  if(strip(w.ar).length>10)d.classList.add("small");wrap.appendChild(d);
+  sub.textContent="сколько это? выбери арабскую цифру";
+  const all=shuffle([w,...distractors(w,"name",cfg.opts-1)]);correct=all.indexOf(w);
+  opts=all.map(x=>({dg:x.name}));
+  hint.textContent=`верно: ${w.name} = ${w.ru}`;
+ }else if(type==="ru2sym"){
+  typeEl.textContent="Запиши цифрой";typeEl.classList.add("dg");
+  wrap.appendChild(el("div","qprompt",w.ru));
+  sub.textContent="выбери арабскую цифру";
+  const all=shuffle([w,...distractors(w,"name",cfg.opts-1)]);correct=all.indexOf(w);
+  opts=all.map(x=>({dg:x.name}));
+  hint.textContent=`верно: ${w.name} = ${w.ar}`;
+ }else if(type==="sym2ru"){
   typeEl.textContent="Что это за число?";typeEl.classList.add("dg");
   const d=el("div","word-ar ar digits");d.textContent=w.name;wrap.appendChild(d);
   sub.textContent="выбери верное значение";
@@ -1147,7 +1165,8 @@ function renderQuestion(q,keep){const w=q.w,type=q.type,cfg=diffCfg();
  q.correct=correct;q.opts=opts;
  const box=$("qOptions");box.innerHTML="";
  opts.forEach((o,i)=>{const b=el("button","opt");let inner=`<span class="kb">${i+1}</span>`;
-  if(o.mark)inner+=`<span class="g mark ar">${o.mark}</span><span class="sub">${o.sub||""}</span>`;
+  if(o.dg)inner+=`<span class="g dg ar">${o.dg}</span>`;
+  else if(o.mark)inner+=`<span class="g mark ar">${o.mark}</span><span class="sub">${o.sub||""}</span>`;
   else if(o.ar)inner+=`<span class="g ar${S.glow&&S.harakat?" marks-on":""}">${o.ar}</span>${o.sub?`<span class="sub">${o.sub}</span>`:""}`;
   else inner+=`<span>${o.main}</span>`;
   b.innerHTML=inner;b.addEventListener("click",()=>answer(i,b));box.appendChild(b);});
@@ -1176,10 +1195,16 @@ function answer(i,btn,timeout){if(G.locked)return;G.locked=true;stopTimer();
   const item=G.queue.shift();
   G.queue.splice(Math.min(clamp(cfg.requeue,1,Math.max(1,G.queue.length)),G.queue.length),0,item);
   updateQuizMeta();
-  if(timeout)toast("Время вышло — слово вернётся в очередь","bad","⏱");
-  if(q.type!=="mark"&&q.type!=="syll")$("qHint").textContent="запомни: "+w.ar+" — "+w.ru+" ("+w.tr+")";
+  let reveal;
+  if(q.type==="word2sym")reveal=`Верно: ${w.ar} = ${w.name} = ${w.ru}`;
+  else if(q.type==="ru2sym")reveal=`Верно: ${w.ru} = ${w.name} = ${w.ar}`;
+  else if(q.type==="sym2ru")reveal=`Верно: ${w.name} = ${w.ar} = ${w.ru}`;
+  else if(q.type==="mark"||q.type==="syll")reveal=$("qHint").textContent;
+  else reveal=`Верно: ${w.ar} (${w.tr}) = ${w.ru}`;
+  if(timeout)reveal="Время вышло. "+reveal;
+  $("qHint").textContent=reveal;
   $("qHint").classList.add("show");
-  setTimeout(()=>{if(G.screen!=="quiz")return;nextQuestion();},1650);
+  setTimeout(()=>{if(G.screen!=="quiz")return;nextQuestion();},2300);
  }}
 function useHint(){if(G.locked||!G.current)return;const cfg=diffCfg();$("qHint").classList.add("show");
  if(!cfg.hintFree){G.hints++;G.streak=0;addXp(-4);updateQuizMeta();toast("Подсказка: −4 XP, серия сброшена","","💡");}
@@ -1300,7 +1325,6 @@ function bind(){
  window.addEventListener("resize",setH);window.addEventListener("orientationchange",()=>setTimeout(setH,250));
 }
 
-/* ---------- выход с сохранением позиции ---------- */
 function goMapFromLearn(){
  if(G.lvl&&G.mode==="level"){progSave(G.lvl.id,{idx:G.learnIdx,seen:[...G.seen]});}
  setScreen("map");renderMap();
