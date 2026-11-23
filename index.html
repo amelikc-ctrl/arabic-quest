@@ -1,6 +1,3 @@
-Гул — это фоновый эмбиент-дрон: три низких осциллятора (110 / 164 / 73 Гц), которые я включал «для атмосферы» после первого касания. На динамике айфона они слышны как постоянный низкий гул. Убрал его полностью — остались только звуки событий (верный ответ, ошибка, переворот, фанфары). Ниже полный файл: замени `index.html` в репозитории целиком.
-
-```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -12,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Арабский">
 <meta name="theme-color" content="#04121a">
-<meta name="description" content="Арабский язык с полным ташкилем: 10 уровней, 298 слов, разбор хараката по буквам.">
+<meta name="description" content="Арабский язык с полным ташкилем: 11 уровней, 328 слов, разбор хараката по буквам, цифры и счёт. Прогресс сохраняется.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Scheherazade+New:wght@400;700&family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -170,6 +167,7 @@ main{position:relative;z-index:10;
 .lvl:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
 .lvl.locked{opacity:.42;cursor:not-allowed;filter:grayscale(.6)}
 .lvl.done{border-color:rgba(47,212,138,.45)}
+.lvl.inprog{border-color:rgba(242,181,68,.5)}
 .lvl-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .lvl-ic{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;border:1px solid var(--line2);
   background:linear-gradient(150deg,rgba(255,255,255,.08),rgba(255,255,255,.02));color:var(--acc)}
@@ -179,6 +177,7 @@ main{position:relative;z-index:10;
 .lvl .ar{font-size:19px;color:var(--acc);opacity:.95;line-height:1.8}
 .lvl-foot{display:flex;align-items:center;justify-content:space-between;margin-top:10px;gap:8px}
 .lvl-count{font-size:11px;color:var(--muted)}
+.lvl-prog{font-size:10.5px;color:var(--gold);font-weight:600;letter-spacing:.04em}
 .stars{display:flex;gap:3px}
 .stars i{font-style:normal;font-size:13px;color:rgba(255,255,255,.18)}
 .stars i.lit{color:var(--gold);text-shadow:0 0 10px rgba(242,181,68,.6)}
@@ -219,7 +218,9 @@ main{position:relative;z-index:10;
 .face .hint{position:absolute;bottom:14px;left:0;right:0;text-align:center;font-size:11px;color:rgba(246,236,217,.55);letter-spacing:.06em;padding:0 12px}
 .word-ar{font-family:var(--arFont);direction:rtl;unicode-bidi:isolate;font-size:clamp(50px,11vw,84px);line-height:2.05;color:#fff8e8;text-shadow:0 6px 30px rgba(0,0,0,.5);text-align:center;max-width:100%;padding:0 4px}
 .word-ar.small{font-size:clamp(34px,7.4vw,56px)}
+.word-ar.digits{font-size:clamp(64px,15vw,110px);color:var(--gold);letter-spacing:.04em}
 .word-name{font-family:var(--arFont);direction:rtl;font-size:26px;color:var(--gold);line-height:1.9;opacity:.95}
+.word-name.big-sym{font-size:44px;line-height:1.5;text-shadow:0 0 26px rgba(242,181,68,.4)}
 .word-ru{font-size:clamp(24px,5vw,38px);font-weight:600;text-align:center;line-height:1.25;color:#fff6e6}
 .word-tr{font-size:16px;color:#ffd9a3;letter-spacing:.04em;font-weight:500}
 .speak-fab{position:absolute;top:12px;right:12px;width:40px;height:40px;border-radius:12px;cursor:pointer;
@@ -276,6 +277,7 @@ main{position:relative;z-index:10;
   border:1px solid var(--line);background:rgba(242,181,68,.12);color:var(--gold);margin-bottom:14px}
 .qtype.mk{border-color:rgba(76,201,240,.5);background:rgba(76,201,240,.14);color:var(--cyan)}
 .qtype.au{border-color:rgba(139,74,156,.55);background:rgba(139,74,156,.18);color:#dcb6ea}
+.qtype.dg{border-color:rgba(224,92,138,.55);background:rgba(224,92,138,.16);color:#ffb3cd}
 .qprompt{font-size:clamp(28px,6vw,46px);font-weight:600;line-height:1.3;color:#fff6e6}
 .qsub{font-size:13.5px;color:var(--muted);margin-top:10px;line-height:1.7}
 .qsub .inline-ar{font-family:var(--arFont);font-size:27px;color:var(--gold);vertical-align:-4px;padding:0 3px}
@@ -297,6 +299,7 @@ main{position:relative;z-index:10;
 .opt .kb{position:absolute;top:7px;left:9px;font-size:10px;color:var(--muted);border:1px solid var(--line2);border-radius:5px;padding:1px 5px}
 .opt .g{font-family:var(--arFont);font-size:34px;line-height:1.95;color:#fff5e4}
 .opt .g.mark{font-size:42px;color:var(--gold);line-height:1.7}
+.opt .g.dg{font-size:40px;color:var(--gold);line-height:1.6}
 .opt .sub{font-size:11.5px;color:var(--muted)}
 .opt:hover:not(:disabled){transform:translateY(-3px);border-color:var(--gold);background:linear-gradient(168deg,rgba(242,181,68,.17),rgba(242,181,68,.04));box-shadow:0 16px 32px -22px var(--gold)}
 .opt:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
@@ -372,10 +375,11 @@ main{position:relative;z-index:10;
 @keyframes toastOut{to{opacity:0;transform:translateY(10px) scale(.97)}}
 .modal{position:fixed;inset:0;z-index:101;display:none;place-items:center;padding:20px;background:rgba(3,10,14,.76);backdrop-filter:blur(6px)}
 .modal.on{display:grid}
-.modal-box{width:min(420px,100%);padding:26px;border-radius:18px;border:1px solid var(--line);
+.modal-box{width:min(440px,100%);padding:26px;border-radius:18px;border:1px solid var(--line);
   background:linear-gradient(165deg,#123c4d,#0a1f2b);box-shadow:var(--shadow);text-align:center;animation:riseIn .35s both}
 .modal-box h3{font-size:19px;margin-bottom:8px}
 .modal-box p{font-size:13.5px;color:var(--muted);line-height:1.6;margin-bottom:18px}
+.modal-box .resume-word{font-family:var(--arFont);font-size:34px;color:var(--gold);line-height:1.7;direction:rtl;margin:6px 0 14px}
 .modal-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
 .footer-note{text-align:center;margin-top:30px;font-size:11.5px;color:rgba(159,182,192,.65);line-height:1.7}
 .footer-note .ar{font-size:17px;color:rgba(242,181,68,.6)}
@@ -479,15 +483,15 @@ main{position:relative;z-index:10;
       <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
       <div class="hero-grid">
         <div>
-          <div class="label">Десять уровней · 298 слов · полный ташкиль</div>
+          <div class="label" id="heroCounts">Одиннадцать уровней · 328 слов · полный ташкиль</div>
           <h1>Читай арабский так, как он звучит</h1>
           <p>Каждое слово огласовано: <b>фатха</b>, <b>дамма</b>, <b>кясра</b>, <b>сукун</b>, <b>шадда</b> и <b>танвин</b> стоят на своих местах.
-             Разбирай слово по буквам, слушай, затем проходи проверку — уровень открывается только когда <b>все точки стали зелёными</b>.</p>
+             Разбирай слово по буквам, слушай, затем проходи проверку — уровень открывается только когда <b>все точки стали зелёными</b>. Выходи в любой момент — игра запомнит, на каком слове остановился.</p>
           <div class="stats">
             <div class="stat gold"><b id="stXp">0</b><i>опыт</i></div>
             <div class="stat em"><b id="stWords">0</b><i>слов выучено</i></div>
-            <div class="stat"><b id="stStars">0</b><i>звёзд / 30</i></div>
-            <div class="stat cy"><b id="stLevels">0</b><i>уровней / 10</i></div>
+            <div class="stat"><b id="stStars">0</b><i>звёзд / <span id="stStarsMax">33</span></i></div>
+            <div class="stat cy"><b id="stLevels">0</b><i>уровней / <span id="stLevelsMax">11</span></i></div>
           </div>
           <div class="markstrip" id="markStrip"></div>
         </div>
@@ -612,38 +616,45 @@ main{position:relative;z-index:10;
     <div class="switchrow"><div><b>Подсветка огласовок</b><em>золотое свечение арабского текста</em></div>
       <div class="sw on" id="swGlow" role="switch" aria-checked="true" tabindex="0"></div></div>
     <div id="markList"></div>
-    <div class="mk-note">Харакат не меняет согласный — он задаёт гласный. <b>ب</b> = «б», <b>بَ</b> = «ба», <b>بُ</b> = «бу», <b>بِ</b> = «بي», <b>بْ</b> = «б» без гласного.</div>
+    <div class="mk-note">Харакат не меняет согласный — он задаёт гласный. <b>ب</b> = «б», <b>بَ</b> = «ба», <b>بُ</b> = «бу», <b>بِ</b> = «би», <b>بْ</b> = «б» без гласного.</div>
   </div>
 </aside>
 
 <div id="toasts" aria-live="polite"></div>
 <div class="modal" id="modal">
-  <div class="modal-box">
-    <h3>Сбросить прогресс?</h3>
-    <p>Все звёзды, опыт и выученные слова будут удалены. Путь начнётся с алифа.</p>
-    <div class="modal-btns">
-      <button class="bigbtn ghost" id="modalNo"><span>Отмена</span></button>
-      <button class="bigbtn solid" id="modalYes"><span>Да, сбросить</span></button>
-    </div>
-  </div>
+  <div class="modal-box" id="modalBox"></div>
 </div>
 
 <script>
 "use strict";
-/* ===================== ДАННЫЕ ===================== */
+/* ===================== ДАННЫЕ (уровень 02 — цифры) ===================== */
 const RAW=[
 {id:1,title:"Алфавит",ar:"الْحُرُوف",acc:"#f2b544",icon:"letters",kind:"letters",w:[
 ["ا","alif","алиф — долгое «а»","أَلِف"],["ب","bāʾ","ба — звук б","بَاء"],["ت","tāʾ","та — звук т","تَاء"],
-["ث","thāʾ","са — межзубный с","ثَاء"],["ج","jīm","джим — дж","جِيم"],["ح","ḥāʾ","ха — твёрдый х","حَاء"],
-["خ","khāʾ","ха — горловой х","خَاء"],["د","dāl","даль — д","دَال"],["ذ","dhāl","заль — межзубный з","ذَال"],
-["ر","rāʾ","ра — р","رَاء"],["ز","zāy","зай — з","زَاي"],["س","sīn","син — с","سِين"],
-["ش","shīn","шин — ш","شِين"],["ص","ṣād","сад — твёрдый с","صَاد"],["ض","ḍād","дад — твёрдый д","ضَاد"],
-["ط","ṭāʾ","та — твёрдый т","طَاء"],["ظ","ẓāʾ","за — твёрдый з","ظَاء"],["ع","ʿayn","айн — гортанный","عَيْن"],
-["غ","ghayn","гайн — горловой г","غَيْن"],["ف","fāʾ","фа — ф","فَاء"],["ق","qāf","каф — горловой ك","قَاف"],
+["ث","thāʾ","са — межзубный س","ثَاء"],["ج","jīm","джим — дж","جِيم"],["ح","ḥāʾ","ха — твёрдый خ","حَاء"],
+["خ","khāʾ","ха — горловой خ","خَاء"],["د","dāl","даль — د","دَال"],["ذ","dhāl","заль — межзубный ذ","ذَال"],
+["ر","rāʾ","ра — ر","رَاء"],["ز","zāy","зай — ز","زَاي"],["س","sīn","син — س","سِين"],
+["ش","shīn","шин — ش","شِين"],["ص","ṣād","сад — твёрдый س","صَاد"],["ض","ḍād","дад — твёрдый د","ضَاد"],
+["ط","ṭāʾ","та — твёрдый ت","طَاء"],["ظ","ẓāʾ","за — твёрдый ز","ظَاء"],["ع","ʿayn","айн — гортанный","عَيْن"],
+["غ","ghayn","гайн — горловой г","غَيْن"],["ف","fāʾ","фа — ف","فَاء"],["ق","qāf","каф — горловой ك","قَاف"],
 ["ك","kāf","кяф — ك","كَاف"],["ل","lām","лям — ل","لَام"],["م","mīm","мим — م","مِيم"],
-["ن","nūn","нун — ن","نُون"],["ه","hāʾ","ха — мягкий خ","هَاء"],["و","wāw","вав — в / долгое у","وَاو"],
+["ن","nūn","нун — ن","نُون"],["ه","hāʾ","ха — мягкий ه","هَاء"],["و","wāw","вав — в / долгое у","وَاو"],
 ["ي","yāʾ","йа — й / долгое и","يَاء"]]},
-{id:2,title:"Семья",ar:"الْعَائِلَة",acc:"#e2503f",icon:"family",w:[
+{id:2,title:"Цифры и счёт",ar:"الْأَرْقَام",acc:"#e05c8a",icon:"digits",kind:"digits",w:[
+["صِفْر","ṣifr","ноль","٠"],["وَاحِد","wāḥid","один","١"],["اِثْنَان","ithnān","два","٢"],
+["ثَلَاثَة","thalātha","три","٣"],["أَرْبَعَة","arbaʿa","четыре","٤"],["خَمْسَة","khamsa","пять","٥"],
+["سِتَّة","sitta","шесть","٦"],["سَبْعَة","sabʿa","семь","٧"],["ثَمَانِيَة","thamāniya","восемь","٨"],
+["تِسْعَة","tisʿa","девять","٩"],["عَشَرَة","ʿashara","десять","١٠"],
+["أَحَدَ عَشَرَ","aḥada ʿashar","одиннадцать","١١"],["اِثْنَا عَشَرَ","ithnā ʿashar","двенадцать","١٢"],
+["ثَلَاثَةَ عَشَرَ","thalāthata ʿashar","тринадцать","١٣"],["أَرْبَعَةَ عَشَرَ","arbaʿata ʿashar","четырнадцать","١٤"],
+["خَمْسَةَ عَشَرَ","khamsata ʿashar","пятнадцать","١٥"],["سِتَّةَ عَشَرَ","sittata ʿashar","шестнадцать","١٦"],
+["سَبْعَةَ عَشَرَ","sabʿata ʿashar","семнадцать","١٧"],["ثَمَانِيَةَ عَشَرَ","thamāniyata ʿashar","восемнадцать","١٨"],
+["تِسْعَةَ عَشَرَ","tisʿata ʿashar","девятнадцать","١٩"],["عِشْرُونَ","ʿishrūn","двадцать","٢٠"],
+["ثَلَاثُونَ","thalāthūn","тридцать","٣٠"],["أَرْبَعُونَ","arbāʿūn","сорок","٤٠"],
+["خَمْسُونَ","khamsūn","пятьдесят","٥٠"],["سِتُّونَ","sittūn","шестьдесят","٦٠"],
+["سَبْعُونَ","sabʿūn","семьдесят","٧٠"],["ثَمَانُونَ","thamānūn","восемьдесят","٨٠"],
+["تِسْعُونَ","tisʿūn","девяносто","٩٠"],["مِئَة","miʾa","сто","١٠٠"],["أَلْف","alf","тысяча","١٠٠٠"]]},
+{id:3,title:"Семья",ar:"الْعَائِلَة",acc:"#e2503f",icon:"family",w:[
 ["أَب","ab","отец"],["أُمّ","umm","мать"],["اِبْن","ibn","сын"],["بِنْت","bint","дочь"],
 ["أَخ","akh","брат"],["أُخْت","ukht","сестра"],["جَدّ","jadd","дедушка"],["جَدَّة","jadda","бабушка"],
 ["عَمّ","ʿamm","дядя по отцу"],["عَمَّة","ʿamma","тётя по отцу"],["خَال","khāl","дядя по матери"],
@@ -653,7 +664,7 @@ const RAW=[
 ["حَفِيد","ḥafīd","внук"],["حَفِيدَة","ḥafīda","внучка"],["اِبْن عَمّ","ibn ʿamm","двоюродный брат"],
 ["اِبْن أَخ","ibn akh","племянник"],["بِنْت أُخْت","bint ukht","племянница"],["حَم","ḥam","свёкор / тесть"],
 ["حَمَاة","ḥamāh","свекровь / тёща"],["صِهْر","ṣihr","зять"],["قَرِيب","qarīb","родственник"],["أُسْرَة","usra","семья (малая)"]]},
-{id:3,title:"Домашние животные",ar:"الْحَيَوَانَات الْأَلِيفَة",acc:"#2fd48a",icon:"paw",w:[
+{id:4,title:"Домашние животные",ar:"الْحَيَوَانَات الْأَلِيفَة",acc:"#2fd48a",icon:"paw",w:[
 ["قِطَّة","qiṭṭa","кошка"],["كَلْب","kalb","собака"],["حِصَان","ḥiṣān","лошадь"],["بَقَرَة","baqara","корова"],
 ["خَرُوف","kharūf","баран"],["مَاعِز","māʿiz","коза"],["أَرْنَب","arnab","кролик"],["دَجَاجَة","dajāja","курица"],
 ["دِيك","dīk","петух"],["بَطَّة","baṭṭa","утка"],["وَزَّة","wazza","гусыня"],["حَمَامَة","ḥamāma","голубка"],
@@ -662,7 +673,7 @@ const RAW=[
 ["بَعُوضَة","baʿūḍa","комар"],["فَرَاشَة","farāsha","бабочка"],["فَأْر","faʾr","мышь"],["جُرَذ","juradh","крыса"],
 ["جَرْو","jarw","щенок"],["عِجْل","ʿijl","телёнок"],["حَمَل","ḥamal","ягнёнок"],["فَرْخ","farkh","цыплёнок"],
 ["طَائِر","ṭāʾir","птица"],["حَيَوَان","ḥayawān","животное"]]},
-{id:4,title:"Дикие животные",ar:"الْحَيَوَانَات الْبَرِّيَّة",acc:"#f5a524",icon:"mane",w:[
+{id:5,title:"Дикие животные",ar:"الْحَيَوَانَات الْبَرِّيَّة",acc:"#f5a524",icon:"mane",w:[
 ["أَسَد","asad","лев"],["نَمِر","namir","тигр"],["فِيل","fīl","слон"],["زَرَافَة","zarāfa","жираф"],
 ["قِرْد","qird","обезьяна"],["دُبّ","dubb","медведь"],["ذِئْب","dhiʾb","волк"],["ثَعْلَب","thaʿlab","лиса"],
 ["غَزَال","ghazāl","газель"],["تِمْسَاح","timsāḥ","крокодил"],["ثُعْبَان","thuʿbān","змея"],["نَسْر","nasr","орёл"],
@@ -672,7 +683,7 @@ const RAW=[
 ["وَحِيد الْقَرْن","waḥīd al-qarn","носорог"],["فَرَس النَّهْر","faras an-nahr","бегемот"],
 ["حِمَار وَحْشِيّ","ḥimār waḥshī","зебра"],["ظَبْي","ẓaby","антилопа"],
 ["خِنْزِير بَرِّيّ","khinzīr barrī","кабан"],["نِمْس","nims","мангуст"],["وَطْوَاط","waṭwāṭ","летучая мышь"]]},
-{id:5,title:"Кухня",ar:"الْمَطْبَخ",acc:"#3b7fd4",icon:"pot",w:[
+{id:6,title:"Кухня",ar:"الْمَطْبَخ",acc:"#3b7fd4",icon:"pot",w:[
 ["مَطْبَخ","maṭbakh","кухня"],["مَوْقِد","mawqid","плита"],["ثَلَّاجَة","thallāja","холодильник"],
 ["طَاوِلَة","ṭāwila","стол"],["كُرْسِيّ","kursī","стул"],["طَبَق","ṭabaq","тарелка"],["فِنْجَان","finjān","чашка"],
 ["كَأْس","kaʾs","стакан"],["مِلْعَقَة","milʿaqa","ложка"],["شَوْكَة","shawka","вилка"],["سِكِّين","sikkīn","нож"],
@@ -681,7 +692,7 @@ const RAW=[
 ["شَاي","shāy","чай"],["قَهْوَة","qahwa","кофе"],["سُكَّر","sukkar","сахар"],["مِلْح","milḥ","соль"],
 ["زُبْدَة","zubda","сливочное масло"],["بَيْضَة","bayḍa","яйцо"],["جُبْن","jubn","сыр"],["شُورْبَة","shūrba","суп"],
 ["سَلَطَة","salaṭa","салат"],["فَاكِهَة","fākiha","фрукты"],["خُضَار","khuḍār","овощи"]]},
-{id:6,title:"Школа",ar:"الْمَدْرَسَة",acc:"#12a594",icon:"book",w:[
+{id:7,title:"Школа",ar:"الْمَدْرَسَة",acc:"#12a594",icon:"book",w:[
 ["مَدْرَسَة","madrasa","школа"],["مُعَلِّم","muʿallim","учитель"],["تِلْمِيذ","tilmīdh","ученик"],
 ["صَفّ","ṣaff","класс"],["لَوْحَة","lawḥa","доска"],["كِتَاب","kitāb","книга"],["دَفْتَر","daftar","тетрадь"],
 ["قَلَم","qalam","ручка"],["مِمْحَاة","mimḥāh","ластик"],["مِسْطَرَة","misṭara","линейка"],["حَقِيبَة","ḥaqība","сумка"],
@@ -691,7 +702,7 @@ const RAW=[
 ["لُعْبَة","luʿba","игра"],["صَدِيق","ṣadīq","друг"],["مُدِير","mudīr","директор"],["مَكْتَبَة","maktaba","библиотека"],
 ["وَاجِب","wājib","домашнее задание"],["مِقْعَد","miqʿad","парта"],["اِسْتِرَاحَة","istirāḥa","перемена"],
 ["تِلْمِيذَة","tilmīdha","ученица"],["نَاجِح","nājiḥ","успешный"]]},
-{id:7,title:"Дом и квартира",ar:"الْبَيْت",acc:"#8b4a9c",icon:"home",w:[
+{id:8,title:"Дом и квартира",ar:"الْبَيْت",acc:"#8b4a9c",icon:"home",w:[
 ["بَيْت","bayt","дом"],["شَقَّة","shaqqa","квартира"],["غُرْفَة","ghurfa","комната"],
 ["غُرْفَة نَوْم","ghurfat nawm","спальня"],["صَالُون","ṣālūn","гостиная"],["حَمَّام","ḥammām","ванная"],
 ["مِرْحَاض","mirḥāḍ","туалет"],["شُرْفَة","shurfa","балкон"],["بَاب","bāb","дверь"],["نَافِذَة","nāfidha","окно"],
@@ -700,7 +711,7 @@ const RAW=[
 ["مِرْآة","mirʾāh","зеркало"],["سَجَّادَة","sajjāda","ковёр"],["مِفْتَاح","miftāḥ","ключ"],["دَرَج","daraj","лестница"],
 ["سَطْح","saṭḥ","крыша"],["حَدِيقَة","ḥadīqa","сад"],["مِرْآب","mirʾāb","гараж"],["جَار","jār","сосед"],
 ["قُفْل","qufl","замок"],["سِتَارَة","sitāra","штора"],["وِسَادَة","wisāda","подушка"],["مَنْزِل","manzil","жилище"]]},
-{id:8,title:"Улица и город",ar:"الْمَدِينَة",acc:"#4cc9f0",icon:"city",w:[
+{id:9,title:"Улица и город",ar:"الْمَدِينَة",acc:"#4cc9f0",icon:"city",w:[
 ["شَارِع","shāriʿ","улица"],["طَرِيق","ṭarīq","дорога"],["سَاحَة","sāḥa","площадь"],["جِسْر","jisr","мост"],
 ["حَدِيقَة عَامَّة","ḥadīqa ʿāmma","парк"],["مَتْجَر","matjar","магазин"],["سُوق","sūq","рынок"],
 ["مُسْتَشْفَى","mustashfā","больница"],["صَيْدَلِيَّة","ṣaydaliyya","аптека"],["مَطْعَم","maṭʿam","ресторан"],
@@ -709,7 +720,7 @@ const RAW=[
 ["سَيَّارَة","sayyāra","машина"],["حَافِلَة","ḥāfila","автобус"],["قِطَار","qiṭār","поезд"],["طَائِرَة","ṭāʾira","самолёт"],
 ["إِشَارَة","ishāra","светофор"],["مَبْنَى","mabnā","здание"],["مَحَطَّة","maḥaṭṭa","станция"],["مَطَار","maṭār","аэропорт"],
 ["مِينَاء","mīnāʾ","порт"],["مَدِينَة","madīna","город"],["مُشَاة","mushāh","пешеходы"],["لَافِتَة","lāfita","вывеска"]]},
-{id:9,title:"Природа",ar:"الطَّبِيعَة",acc:"#39c46e",icon:"nature",w:[
+{id:10,title:"Природа",ar:"الطَّبِيعَة",acc:"#39c46e",icon:"nature",w:[
 ["طَبِيعَة","ṭabīʿa","природа"],["شَمْس","shams","солнце"],["قَمَر","qamar","луна"],["نَجْمَة","najma","звезда"],
 ["سَمَاء","samāʾ","небо"],["سَحَابَة","saḥāba","облако"],["مَطَر","maṭar","дождь"],["ثَلْج","thalj","снег"],
 ["رِيح","rīḥ","ветер"],["عَاصِفَة","ʿāṣifa","буря"],["بَحْر","baḥr","море"],["مُحِيط","muḥīṭ","океан"],
@@ -718,7 +729,7 @@ const RAW=[
 ["عُشْب","ʿushb","трава"],["وَرَقَة","waraqa","лист"],["حَجَر","ḥajar","камень"],["رَمْل","raml","песок"],
 ["أَرْض","arḍ","земля"],["نَار","nār","огонь"],["هَوَاء","hawāʾ","воздух"],["جَزِيرَة","jazīra","остров"],
 ["صَحْرَاء","ṣaḥrāʾ","пустыня"],["شَلَّال","shallāl","водопад"]]},
-{id:10,title:"Офис и работа",ar:"الْمَكْتَب",acc:"#d9a441",icon:"case",w:[
+{id:11,title:"Офис и работа",ar:"الْمَكْتَب",acc:"#d9a441",icon:"case",w:[
 ["مَكْتَب","maktab","офис"],["عَمَل","ʿamal","работа"],["عَامِل","ʿāmil","работник"],
 ["مُوَظَّف","muwaẓẓaf","служащий"],["مُدِير","mudīr","руководитель"],["مُهَنْدِس","muhandis","инженер"],
 ["زَمِيل","zamīl","коллега"],["زَبُون","zabūn","клиент"],["اِجْتِمَاع","ijtimāʿ","совещание"],
@@ -732,6 +743,7 @@ const RAW=[
 ];
 const ICONS={
  letters:"<path d='M9 4v9a5 5 0 0 1-5 5'/><path d='M14.5 3v15'/><circle cx='18.5' cy='6.5' r='1.2'/>",
+ digits:"<path d='M9.5 4 7.5 20M16.5 4l-2 16M4 9h16M3 15h16'/>",
  family:"<circle cx='8' cy='7.5' r='2.8'/><circle cx='16.5' cy='8.5' r='2.2'/><path d='M3 20c0-3 2.2-5.2 5-5.2s5 2.2 5 5.2'/><path d='M14 20c0-2.4 1.4-4.2 3.4-4.2S21 17.6 21 20'/>",
  paw:"<circle cx='7' cy='9' r='1.9'/><circle cx='12' cy='6.8' r='1.9'/><circle cx='17' cy='9' r='1.9'/><path d='M12 12.4c-3 0-5 2.2-5 4.3S9.2 20 12 20s5-1.6 5-3.3-2-4.3-5-4.3z'/>",
  mane:"<circle cx='12' cy='12' r='4.4'/><path d='M12 2.4v2.2M12 19.4v2.2M2.4 12h2.2M19.4 12h2.2M5.2 5.2l1.6 1.6M17.2 17.2l1.6 1.6M18.8 5.2l-1.6 1.6M6.8 17.2l-1.6 1.6'/>",
@@ -760,17 +772,28 @@ const CIRCLE="\u25CC";
 const HARAKAT_RE=/[\u064B-\u065F\u0670\u06D6-\u06ED]/;
 const STRIP_RE=/[\u064B-\u065F\u0670\u06D6-\u06ED\u0640]/g;
 const strip=s=>s.replace(STRIP_RE,"");
-const BASE_RU={"ا":"","أ":"ъ","إ":"ъ","آ":"а","ء":"ъ","ؤ":"ъ","ئ":"ъ","ب":"б","ت":"т","ث":"с","ج":"дж","ح":"х","خ":"х","د":"д","ذ":"з","ر":"р","ز":"з","س":"с","ش":"ш","ص":"с","ض":"д","ط":"т","ظ":"з","ع":"ъ","غ":"г","ف":"ф","ق":"к","ك":"к","ل":"л","م":"м","ن":"н","ه":"х","و":"в","ي":"й","ة":"т","ى":"а"};
+const BASE_RU={"ا":"","أ":"ъ","إ":"ъ","آ":"а","ء":"ъ","ؤ":"ъ","ئ":"ъ","ب":"б","ت":"т","ث":"س","ج":"дж","ح":"х","خ":"х","د":"д","ذ":"з","ر":"р","ز":"з","س":"с","ش":"ш","ص":"с","ض":"д","ط":"т","ظ":"з","ع":"ъ","غ":"г","ف":"ф","ق":"к","ك":"ك","ل":"л","م":"м","ن":"н","ه":"х","و":"в","ي":"й","ة":"т","ى":"а"};
 function clusters(str){const out=[];for(const ch of str){if(HARAKAT_RE.test(ch)){if(out.length)out[out.length-1].m+=ch;continue;}out.push({b:ch,m:""});}return out;}
+function plural(n){const m=n%100;if(m>=11&&m<=14)return"слов";const k=n%10;if(k===1)return"слово";if(k>=2&&k<=4)return"слова";return"слов";}
 
 /* ===================== СОСТОЯНИЕ ===================== */
 const LEVELS=RAW.map(L=>({...L,words:L.w.map((t,i)=>({ar:t[0],tr:t[1],ru:t[2],name:t[3]||"",i,lvl:L.id,kind:L.kind||"word"}))}));
 const TOTAL_WORDS=LEVELS.reduce((a,L)=>a+L.words.length,0);
-const KEY="arabicQuestHarakat_v1";
-const DEF={xp:0,done:{},learned:[],harakat:true,glow:true,sound:true,diff:"normal",mkCorrect:0,badges:[]};
-let S=load();
+const KEY="arabicQuestHarakat_v2";
+const DEF={xp:0,done:{},learned:[],harakat:true,glow:true,sound:true,diff:"normal",mkCorrect:0,badges:[],progress:{}};
+let S=migrate(load());
 function load(){try{return {...DEF,...JSON.parse(localStorage.getItem(KEY)||"{}")};}catch(e){return {...DEF};}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+function migrate(s){
+ if(!s.progress)s.progress={};
+ const old=localStorage.getItem("arabicQuestHarakat_v1");
+ if(old&&!Object.keys(s.done).length){
+  try{const o=JSON.parse(old);
+   if(o.done){s.done=o.done;s.xp=o.xp||0;s.learned=o.learned||[];s.badges=o.badges||[];s.mkCorrect=o.mkCorrect||0;save();}
+  }catch(e){}
+ }
+ return s;
+}
 const G={screen:"map",lvl:null,mode:"level",learnIdx:0,seen:new Set(),queue:[],total:0,doneCount:0,miss:0,
  streak:0,best:0,hints:0,locked:false,current:null,timerId:null,timeLeft:0,sessionXp:0,mkSession:0,mastered:new Set()};
 const $=id=>document.getElementById(id);
@@ -780,6 +803,12 @@ const shuffle=a=>{const b=a.slice();for(let i=b.length-1;i>0;i--){const j=rnd(i+
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const arText=s=>S.harakat?s:strip(s);
 const reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const wordGlyph=w=>w.kind==="digits"?w.name:arText(w.ar);
+
+/* ---------- сохранение позиции выхода ---------- */
+function progGet(lid){return S.progress[lid]||null;}
+function progSave(lid,data){S.progress[lid]=data;save();}
+function progClear(lid){delete S.progress[lid];save();}
 
 /* ===================== ЗВУК (без фонового гула) ===================== */
 const Snd={ctx:null,master:null,noise:null,ready:false,
@@ -909,15 +938,16 @@ function starCount(){return Object.values(S.done).reduce((a,d)=>a+(d.stars||0),0
 function renderMap(){$("stXp").textContent=S.xp;$("xpVal").textContent=S.xp;$("stWords").textContent=S.learned.length;
  $("stStars").textContent=starCount();$("stLevels").textContent=Object.keys(S.done).length;
  const g=$("levelsGrid");g.innerHTML="";
- LEVELS.forEach((L,idx)=>{const un=isUnlocked(L.id),d=S.done[L.id];
-  const b=el("button","lvl"+(un?"":" locked")+(d?" done":""));
+ LEVELS.forEach((L,idx)=>{const un=isUnlocked(L.id),d=S.done[L.id],pg=progGet(L.id);
+  const b=el("button","lvl"+(un?"":" locked")+(d?" done":"")+(pg&&!d?" inprog":""));
   b.style.setProperty("--acc",L.acc);b.style.setProperty("--d",(idx*.045)+"s");b.disabled=!un;
   const stars=d?d.stars:0;
+  const progTxt=pg&&!d?`<span class="lvl-prog">● на слове ${pg.idx+1}/${L.words.length}</span>`:"";
   b.innerHTML=`<div class="lvl-top"><span class="lvl-ic"><svg viewBox="0 0 24 24">${ICONS[L.icon]}</svg></span>
    <span class="lvl-num">${String(L.id).padStart(2,"0")}</span></div><h3>${L.title}</h3>
    <div class="ar${S.glow&&S.harakat?" marks-on":""}">${arText(L.ar)}</div>
-   <div class="lvl-foot"><span class="lvl-count">${L.words.length} слов</span>
-   ${un?`<span class="stars">${[0,1,2].map(i=>`<i class="${i<stars?"lit":""}">★</i>`).join("")}</span>`:`<span class="lockbadge">🔒 закрыт</span>`}</div>`;
+   <div class="lvl-foot"><span class="lvl-count">${L.words.length} ${plural(L.words.length)}</span>
+   ${un?(progTxt||`<span class="stars">${[0,1,2].map(i=>`<i class="${i<stars?"lit":""}">★</i>`).join("")}</span>`):`<span class="lockbadge">🔒 закрыт</span>`}</div>`;
   if(un)b.addEventListener("click",()=>{Snd.init();Snd.resume();Snd.click();openLevel(L.id);});
   g.appendChild(b);});
  renderTopMid();}
@@ -935,24 +965,47 @@ function renderMarkList(){const l=$("markList");l.innerHTML="";
   r.appendChild(p);l.appendChild(r);});}
 
 /* ===================== ИЗУЧЕНИЕ ===================== */
-function openLevel(id){const L=LEVELS.find(x=>x.id===id);if(!L)return;
- G.lvl=L;G.mode="level";G.learnIdx=0;G.seen=new Set();
+function openLevel(id,resumeIdx){
+ const L=LEVELS.find(x=>x.id===id);if(!L)return;
+ G.lvl=L;G.mode="level";
+ G.learnIdx=(typeof resumeIdx==="number")?clamp(resumeIdx,0,L.words.length-1):0;
+ G.seen=new Set();
  $("learnTitle").textContent=L.title;$("learnArTitle").textContent=arText(L.ar);$("learnTotal").textContent=L.words.length;
- buildRail();setScreen("learn");renderLearn();updateVoiceNote();}
+ buildRail();setScreen("learn");renderLearn();updateVoiceNote();
+}
+function askResume(L){
+ const pg=progGet(L.id);if(!pg)return;
+ const w=L.words[clamp(pg.idx,0,L.words.length-1)];
+ const box=$("modalBox");
+ box.innerHTML=`<h3>Продолжить уровень «${L.title}»?</h3>
+  <p>Ты остановился на слове ${pg.idx+1} из ${L.words.length}.</p>
+  <div class="resume-word">${wordGlyph(w)}</div>
+  <div class="modal-btns">
+   <button class="bigbtn ghost" id="rsFresh"><span class="g">↻</span><span>Начать заново</span></button>
+   <button class="bigbtn solid" id="rsCont"><span class="g">▶</span><span>Продолжить</span></button>
+  </div>`;
+ $("modal").classList.add("on");
+ $("rsFresh").onclick=()=>{Snd.click();closeModal();progClear(L.id);enterLearn(L,0);};
+ $("rsCont").onclick=()=>{Snd.click();closeModal();enterLearn(L,pg.idx);};
+}
+function enterLearn(L,idx){openLevel(L.id,idx);}
 function buildRail(){const r=$("rail");r.innerHTML="";
  G.lvl.words.forEach((w,i)=>{const b=el("button","rail-item");
-  b.innerHTML=`<span class="g">${arText(w.ar)}</span><span class="r">${w.ru}</span>`;
+  b.innerHTML=`<span class="g">${wordGlyph(w)}</span><span class="r">${w.ru}</span>`;
   b.addEventListener("click",()=>{G.learnIdx=i;renderLearn();Snd.click();});r.appendChild(b);});}
 function renderLearn(){const L=G.lvl;if(!L)return;const w=L.words[G.learnIdx];G.seen.add(G.learnIdx);
  $("card3d").classList.remove("flipped");$("cardIdx").textContent=String(G.learnIdx+1).padStart(2,"0");
  $("cardAr").textContent=arText(w.ar);$("cardAr").classList.toggle("small",strip(w.ar).length>10);
  $("cardAr").classList.toggle("marks-on",S.glow&&S.harakat);
  const nm=$("cardName");
- if(w.name){nm.hidden=false;nm.textContent=arText(w.name);nm.classList.toggle("marks-on",S.glow&&S.harakat);}else nm.hidden=true;
+ if(w.name){nm.hidden=false;nm.textContent=arText(w.name);
+  nm.classList.toggle("big-sym",w.kind==="digits");
+  nm.classList.toggle("marks-on",S.glow&&S.harakat&&w.kind!=="digits");}
+ else nm.hidden=true;
  $("cardRu").textContent=w.ru;$("cardTr").textContent=w.tr;$("learnSeen").textContent=G.seen.size;
  $("learnArTitle").textContent=arText(L.ar);
  [...$("rail").children].forEach((n,i)=>{n.classList.toggle("active",i===G.learnIdx);n.classList.toggle("seen",G.seen.has(i));
-  n.querySelector(".g").textContent=arText(L.words[i].ar);});
+  n.querySelector(".g").textContent=wordGlyph(L.words[i]);});
  const act=$("rail").children[G.learnIdx];
  if(act&&act.scrollIntoView)act.scrollIntoView({block:"nearest",inline:"center",behavior:reduced?"auto":"smooth"});
  renderChips(w);}
@@ -968,6 +1021,7 @@ function renderChips(w){const box=$("chips"),note=$("mkNote");box.innerHTML="";
   if(!c.m){items.push({g:c.b,n:"без знака",s:"—",say:c.b});return;}
   const ms=[...c.m].map(ch=>MARK_BY_CH[ch]).filter(Boolean);
   items.push({g:c.b+c.m,n:ms.map(m=>m.ru).join(" + ")||"знак",s:ms.map(m=>m.s).join(" + "),say:c.b+c.m});});}
+ if(w.kind==="digits")items.unshift({g:w.name,n:"цифра",s:w.ru,say:w.ar});
  if(!items.length){box.hidden=true;note.hidden=false;note.textContent="В этом слове знаков нет.";return;}
  items.forEach(it=>{const c=el("button","chip",`<span class="g">${it.g}</span><span class="n">${it.n}</span><span class="s">${it.s}</span>`);
   c.addEventListener("click",()=>{Snd.init();Snd.resume();Snd.mark();Speech.say(it.say);
@@ -1010,6 +1064,12 @@ function markTargets(w){const cs=clusters(w.ar),bare=strip(w.ar),out=[];
  return out;}
 function pickType(w){
  if(w.kind==="letters"){if(G.mode==="marks")return "syll";return Math.random()<.34?"syll":(Math.random()<.5?"ar2ru":"ru2ar");}
+ if(w.kind==="digits"){
+  if(G.mode==="marks")return markTargets(w).length?"mark":"sym2ru";
+  const bag=["sym2ru","sym2ru","ar2ru","ru2ar"];
+  if(Speech.ok&&Speech.voice)bag.push("audio");
+  if(S.harakat&&markTargets(w).length)bag.push("mark");
+  return bag[rnd(bag.length)];}
  if(G.mode==="marks"){return markTargets(w).length?"mark":"ar2ru";}
  const bag=["ar2ru","ar2ru","ru2ar"];
  if(Speech.ok&&Speech.voice)bag.push("audio");
@@ -1029,26 +1089,36 @@ function renderQuestion(q,keep){const w=q.w,type=q.type,cfg=diffCfg();
  if(!keep){hint.classList.remove("show");hint.textContent="";}
  typeEl.className="qtype";wrap.innerHTML="";sub.innerHTML="";
  let opts=[],correct=0;
- if(type==="ar2ru"){
+ if(type==="sym2ru"){
+  typeEl.textContent="Что это за число?";typeEl.classList.add("dg");
+  const d=el("div","word-ar ar digits");d.textContent=w.name;wrap.appendChild(d);
+  sub.textContent="выбери верное значение";
+  const all=shuffle([w,...distractors(w,"ru",cfg.opts-1)]);correct=all.indexOf(w);
+  opts=all.map(x=>({main:x.ru}));
+  hint.textContent="слово: "+w.ar+" ("+w.tr+")";
+ }else if(type==="ar2ru"){
   typeEl.textContent="Что означает слово?";
   const d=el("div","word-ar ar"+(S.glow&&S.harakat?" marks-on":""));d.textContent=arText(w.ar);
   if(strip(w.ar).length>10)d.classList.add("small");wrap.appendChild(d);
-  sub.textContent=w.kind==="letters"?"выбери название и звук буквы":"выбери верный перевод";
+  sub.innerHTML=w.kind==="digits"?`число <span class="inline-ar">${w.name}</span> · выбери перевод`
+   :(w.kind==="letters"?"выбери название и звук буквы":"выбери верный перевод");
   const all=shuffle([w,...distractors(w,"ru",cfg.opts-1)]);correct=all.indexOf(w);
   opts=all.map(x=>({main:x.ru}));hint.textContent="транскрипция: "+w.tr;
  }else if(type==="ru2ar"){
-  typeEl.textContent="Выбери арабское слово";
+  typeEl.textContent=w.kind==="digits"?"Выбери слово числа":"Выбери арабское слово";
   wrap.appendChild(el("div","qprompt",w.ru));
   sub.textContent="огласовки помогают прочитать верно";
   const all=shuffle([w,...distractors(w,"ar",cfg.opts-1)]);correct=all.indexOf(w);
-  opts=all.map(x=>({ar:arText(x.ar),sub:x.tr}));hint.textContent="транскрипция: "+w.tr;
+  opts=all.map(x=>({ar:arText(x.ar),sub:w.kind==="digits"?x.tr+" · "+x.name:x.tr}));
+  hint.textContent="транскрипция: "+w.tr;
  }else if(type==="audio"){
   typeEl.textContent="Прослушай и выбери";typeEl.classList.add("au");
   const b=el("button","audio-btn","🔊");b.title="Прослушать ещё раз";
   b.addEventListener("click",()=>{Snd.init();Snd.resume();b.classList.remove("ring");void b.offsetWidth;b.classList.add("ring");Speech.say(w.ar);});
   wrap.appendChild(b);sub.textContent="нажми на круг, чтобы услышать слово снова";
   const all=shuffle([w,...distractors(w,"ar",cfg.opts-1)]);correct=all.indexOf(w);
-  opts=all.map(x=>({ar:arText(x.ar),sub:S.harakat?x.tr:""}));hint.textContent="перевод: "+w.ru;
+  opts=all.map(x=>({ar:arText(x.ar),sub:(w.kind==="digits"?x.name+" · ":"")+(S.harakat?x.tr:"")}));
+  hint.textContent="перевод: "+w.ru;
   setTimeout(()=>{if(G.current===q){b.classList.add("ring");Speech.say(w.ar);}},260);
  }else if(type==="mark"){
   const ts=markTargets(w);
@@ -1118,6 +1188,7 @@ function checkBadges(){const add=(id,msg,g)=>{if(S.badges.includes(id))return;S.
  if(S.learned.length>=50)add("w50","50 слов выучено — полсотни!","٥٠");
  if(S.learned.length>=100)add("w100","100 слов! مئة كلمة","١٠٠");
  if(S.learned.length>=200)add("w200","200 слов — путь почти пройден","٢٠٠");
+ if(S.learned.length>=300)add("w300","300 слов — настоящий путник","٣٠٠");
  if(S.mkCorrect>=25)add("mk25","Знаток хараката: 25 верных огласовок","بّ");
  if(G.best>=10)add("s10","Серия из 10 без ошибок","🔥");}
 
@@ -1125,7 +1196,8 @@ function checkBadges(){const add=(id,msg,g)=>{if(S.badges.includes(id))return;S.
 function finishRound(){stopTimer();Speech.stop();
  const stars=G.miss<=2?3:G.miss<=7?2:1;
  if(G.mode==="level"&&G.lvl){const prev=S.done[G.lvl.id];
-  S.done[G.lvl.id]={stars:Math.max(stars,prev?prev.stars:0),miss:prev?Math.min(prev.miss,G.miss):G.miss};save();}
+  S.done[G.lvl.id]={stars:Math.max(stars,prev?prev.stars:0),miss:prev?Math.min(prev.miss,G.miss):G.miss};
+  progClear(G.lvl.id);save();}
  addXp(G.mode==="level"?40+stars*20:25);
  $("winCalli").textContent=G.miss===0?"مُمْتَاز":(stars===3?"أَحْسَنْت":"أَتْمَمْت");
  $("winTitle").textContent=G.mode==="level"?`Уровень ${G.lvl.id} «${G.lvl.title}» пройден`:(G.mode==="marks"?"Тренажёр хараката пройден":"Повторение завершено");
@@ -1152,10 +1224,7 @@ function finishRound(){stopTimer();Speech.stop();
 /* ===================== ПАНЕЛЬ / МОДАЛКА ===================== */
 function openDrawer(){$("drawer").classList.add("on");$("drawer").setAttribute("aria-hidden","false");$("scrim").classList.add("on");$("drawerClose").focus();}
 function closeDrawer(){$("drawer").classList.remove("on");$("drawer").setAttribute("aria-hidden","true");$("scrim").classList.remove("on");}
-let modalAction=null;
-function askReset(){modalAction=()=>{S={...DEF,harakat:S.harakat,glow:S.glow,sound:S.sound,diff:S.diff};save();
- renderMap();syncHarakatUI();setScreen("map");toast("Прогресс сброшен — с алифа заново","","ا");};$("modal").classList.add("on");}
-function closeModal(){$("modal").classList.remove("on");modalAction=null;}
+function closeModal(){$("modal").classList.remove("on");}
 
 /* ===================== СОБЫТИЯ ===================== */
 function bind(){
@@ -1172,7 +1241,7 @@ function bind(){
   else if(G.screen==="learn"&&G.lvl){G.learnIdx=0;G.seen=new Set();renderLearn();toast("Карточки с начала","","↻");}
   else toast("Выбери уровень на карте","","☝");});
  $("btnMap").addEventListener("click",()=>{Snd.click();setScreen("map");renderMap();});
- $("learnBack").addEventListener("click",()=>{Snd.click();setScreen("map");renderMap();});
+ $("learnBack").addEventListener("click",()=>{Snd.click();goMapFromLearn();});
  $("cardInner").addEventListener("click",flipCard);
  $("cardInner").addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();flipCard();}});
  $("cardSpeak").addEventListener("click",e=>{e.stopPropagation();speakCurrent();});
@@ -1182,12 +1251,12 @@ function bind(){
  $("learnNext").addEventListener("click",()=>{G.learnIdx=(G.learnIdx+1)%G.lvl.words.length;renderLearn();Snd.click();});
  $("learnStart").addEventListener("click",()=>{Snd.init();Snd.resume();Snd.click();startLevelQuiz();});
  $("btnHint").addEventListener("click",useHint);
- $("btnQuit").addEventListener("click",()=>{Snd.click();setScreen("map");renderMap();});
+ $("btnQuit").addEventListener("click",()=>{Snd.click();goMapFromQuiz();});
  $("winMap").addEventListener("click",()=>{Snd.click();setScreen("map");renderMap();});
  $("winAgain").addEventListener("click",()=>{Snd.click();if(G.mode==="level")startLevelQuiz();else if(G.mode==="marks")startMarkDrill();else startReview();});
  $("btnMarkDrill").addEventListener("click",()=>{Snd.init();Snd.resume();Snd.click();startMarkDrill();});
  $("btnReview").addEventListener("click",()=>{Snd.init();Snd.resume();Snd.click();startReview();});
- $("btnReset").addEventListener("click",()=>{Snd.click();askReset();});
+ $("btnReset").addEventListener("click",askReset);
  $("drawerClose").addEventListener("click",()=>{Snd.click();closeDrawer();});
  $("scrim").addEventListener("click",closeDrawer);
  $("swHarakat").addEventListener("click",()=>toggleHarakat());
@@ -1195,8 +1264,6 @@ function bind(){
  const glowToggle=()=>{S.glow=!S.glow;save();syncHarakatUI();Snd.click();};
  $("swGlow").addEventListener("click",glowToggle);
  $("swGlow").addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();glowToggle();}});
- $("modalNo").addEventListener("click",()=>{Snd.click();closeModal();});
- $("modalYes").addEventListener("click",()=>{Snd.click();if(modalAction)modalAction();closeModal();});
  const tilt=$("cardTilt"),card=$("card3d");
  if(!reduced&&window.matchMedia("(hover:hover)").matches){
   card.addEventListener("pointermove",e=>{const r=card.getBoundingClientRect();
@@ -1206,8 +1273,11 @@ function bind(){
  document.addEventListener("keydown",e=>{
   const tag=(e.target.tagName||"").toLowerCase();
   if(tag==="input"||tag==="select"||tag==="textarea")return;
-  if(e.key==="Escape"){if($("modal").classList.contains("on")){closeModal();return;}
+  if(e.key==="Escape"){
+   if($("modal").classList.contains("on")){closeModal();return;}
    if($("drawer").classList.contains("on")){closeDrawer();return;}
+   if(G.screen==="learn"){goMapFromLearn();return;}
+   if(G.screen==="quiz"){goMapFromQuiz();return;}
    if(G.screen!=="map"){setScreen("map");renderMap();}return;}
   if($("drawer").classList.contains("on")||$("modal").classList.contains("on"))return;
   const k=e.key.toLowerCase();
@@ -1230,6 +1300,34 @@ function bind(){
  window.addEventListener("resize",setH);window.addEventListener("orientationchange",()=>setTimeout(setH,250));
 }
 
+/* ---------- выход с сохранением позиции ---------- */
+function goMapFromLearn(){
+ if(G.lvl&&G.mode==="level"){progSave(G.lvl.id,{idx:G.learnIdx,seen:[...G.seen]});}
+ setScreen("map");renderMap();
+}
+function goMapFromQuiz(){
+ if(G.lvl&&G.mode==="level"){
+  const firstPending=G.queue.length?G.queue[0].i:G.learnIdx;
+  progSave(G.lvl.id,{idx:firstPending,quiz:true,done:G.doneCount,total:G.total});
+ }
+ setScreen("map");renderMap();
+ toast(G.mode==="level"?"Прогресс проверки сохранён":"Выход","ok","✓");
+}
+function askReset(){
+ const box=$("modalBox");
+ box.innerHTML=`<h3>Сбросить прогресс?</h3>
+  <p>Все звёзды, опыт, выученные слова и позиции выхода будут удалены. Путь начнётся с алифа.</p>
+  <div class="modal-btns">
+   <button class="bigbtn ghost" id="modalNo"><span>Отмена</span></button>
+   <button class="bigbtn solid" id="modalYes"><span>Да, сбросить</span></button>
+  </div>`;
+ $("modal").classList.add("on");
+ $("modalNo").onclick=()=>{Snd.click();closeModal();};
+ $("modalYes").onclick=()=>{Snd.click();
+  S={...DEF,harakat:S.harakat,glow:S.glow,sound:S.sound,diff:S.diff,progress:{}};save();
+  closeModal();renderMap();syncHarakatUI();setScreen("map");toast("Прогресс сброшен — с алифа заново","","ا");};
+}
+
 /* ===================== ИКОНКА iOS ===================== */
 function makeIcon(){try{
  const c=document.createElement("canvas");c.width=c.height=180;const x=c.getContext("2d");
@@ -1247,6 +1345,9 @@ function init(){
  $("selDiff").value=S.diff;
  const sb=$("btnSound");sb.classList.toggle("on",S.sound);sb.classList.toggle("off",!S.sound);
  sb.querySelector(".ic").textContent=S.sound?"🔊":"🔇";sb.setAttribute("aria-pressed",String(S.sound));
+ $("heroCounts").textContent=`${LEVELS.length} уровней · ${TOTAL_WORDS} ${plural(TOTAL_WORDS)} · полный ташкиль`;
+ $("stStarsMax").textContent=LEVELS.length*3;
+ $("stLevelsMax").textContent=LEVELS.length;
  renderMarkStrip();renderMarkList();renderMap();syncHarakatUI();bind();FX.init();updateVoiceNote();
  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(makeIcon).catch(makeIcon);else makeIcon();
  setTimeout(()=>{toast(!S.done[1]?"Начни с алифа — уровень 01 открыт":"С возвращением! Продолжай путь","ok","ا");},900);
@@ -1255,6 +1356,3 @@ init();
 </script>
 </body>
 </html>
-```
-
-Замени `index.html` в репозитории целиком (карандаш ✏️ → Ctrl+A → вставить → Commit changes). Гул исчезнет сразу после обновления страницы на айфоне; если игра стоит иконкой — закрой её полностью (свайп вверх из переключателя приложений) и открой заново.
